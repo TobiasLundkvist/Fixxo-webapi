@@ -29,7 +29,7 @@ controller.route('/')
 })
 
 //http://localhost:5000/api/products/1
-
+// För att få ett objekt
 controller.route("/:id")
 .get((httpRequest, httpResponse) => {
     if (httpRequest.user != undefined)
@@ -37,12 +37,14 @@ controller.route("/:id")
     else
         httpResponse.status(404).json()
 })
+//Updatera ett objekt
 .put((httpRequest, httpResponse) => {
     if (httpRequest.user != undefined) {
         users.forEach(user => {
             if (user.id == httpRequest.user.id) {
                 user.articleNumber = httpRequest.body.articleNumber ? httpRequest.body.articleNumber : user.articleNumber
                 user.category = httpRequest.body.category ? httpRequest.body.category : user.category
+                user.name = httpRequest.body.name ? httpRequest.body.name : user.name
                 user.price = httpRequest.body.price ? httpRequest.body.price : user.price
                 user.rating = httpRequest.body.rating ? httpRequest.body.rating : user.rating
                 user.imageName = httpRequest.body.imageName ? httpRequest.body.imageName : user.imageName
