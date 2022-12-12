@@ -1,19 +1,7 @@
 const express = require('express')
 const controller = express.Router()
-// let products = require('../data/database')
-
 const productSchema = require('../schemas/productSchema')
 
-// controller.param("articleNumber", (req, res, next, articleNumber) => {
-//     req.product = products.find(x => x.articleNumber == articleNumber)
-//     next()
-// })
-
-
-// controller.param("tag", (req, res, next, tag) => {
-//     req.products = products.filter(x => x.tag == tag)
-//     next()
-// })
 
 // unsecured routes
 //Olika controller/routes som gör saker
@@ -165,9 +153,27 @@ controller.route('/:articleNumber').delete(async (req, res) => {
         res.status(404).json({ message: `Article number ${req.params.articleNumber} was not found` })
     }
 })
+// Uppdatera en produkt
+controller.route('/:articleNumber').put(async (req, res) => {
+    const { tag, name, description, category, price, rating, imageName } = req.body
+
+    try {
+        const product = await productSchema.findById( req.params.articleNumber )
+        console.log("test product", product)
+        if(!product) {
+            res.status(404),json()
+            console.log("404 error")
+        } else {
+            const updateProduct = await productSchema.findByIdAndUpdate(req.params.articleNumber, req.body, { new: true })
+            console.log("updatedProduct", updateProduct)
+        }
+
+    } catch {
+        console.log("catch problem")
+    }
 
 
-
+})
 
 
 

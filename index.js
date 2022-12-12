@@ -13,13 +13,12 @@ app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 
-// routes/controllers, för att skapa och radera produkter(egengjord)
-const manageProductController = require('./controllers/manageProductController')
-app.use('/api/manageproducts', manageProductController)
-
-// routes/controllers, för att kunna hämta produkter till sidan
+// routes/controllers, för att kunna hämta produkter till sidan och CRUD
 const productscontroller = require('./controllers/productsController')
 app.use('/api/products', productscontroller)
+
+// route/controller, för att skapa och logga in en användare
+app.use('/api/authentication', require('./controllers/authenticationController'))
 
 
 
