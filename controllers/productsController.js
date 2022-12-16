@@ -1,4 +1,5 @@
 const express = require('express')
+const { authorize } = require('../middlewares/authorization')
 const controller = express.Router()
 const productSchema = require('../schemas/productSchema')
 
@@ -113,10 +114,10 @@ controller.route('/:tag/:limit').get(async (req, res) => {
 
 // secured routes
 // Skapa en produkt
-controller.route('/').post(async (req, res) => {
+controller.route('/').post(authorize, async (req, res) => {
     const { tag, name, description, category, price, rating, imageName } = req.body
 
-    if (!name || !price)
+    if (!name)
         res.status(400).json({ message: 'Fill in price and name!' })
 
     const itemExists = await productSchema.findOne({name})
@@ -139,9 +140,8 @@ controller.route('/').post(async (req, res) => {
     }
 })
 
-
 // Ta bort en produkt
-controller.route('/:articleNumber').delete(async (req, res) => {
+controller.route('/:articleNumber').delete(authorize, async (req, res) => {
     if(!req.params.articleNumber)
         res.status(400).json('No article was specified')
 
@@ -153,8 +153,9 @@ controller.route('/:articleNumber').delete(async (req, res) => {
         res.status(404).json({ message: `Article number ${req.params.articleNumber} was not found` })
     }
 })
+
 // Uppdatera en produkt
-controller.route('/:articleNumber').put(async (req, res) => {
+controller.route('/:articleNumber').put(authorize, async (req, res) => {
     const { tag, name, description, category, price, rating, imageName } = req.body
 
     try {
