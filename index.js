@@ -5,6 +5,8 @@ const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const mongoDB = require('./server-mongoDB')
+const { graphqlHTTP } = require('express-graphql')
+
 
 
 // middleware
@@ -20,6 +22,11 @@ app.use('/api/products', productscontroller)
 // route/controller, för att skapa och logga in en användare
 app.use('/api/authentication', require('./controllers/authenticationController'))
 
+// graphQL route/controller
+app.use('/graphql', graphqlHTTP({
+    schema: require('./graphQL/graphQLschemas') ,
+    graphiql: true
+}))
 
 
 // start Web API/ initialize
